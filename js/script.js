@@ -25,25 +25,49 @@ function renderDropdown() {
   }).join("");
 }
 
+/* ---------- HOW TO INSTALL (accordion) ---------- */
+let installRows = [];
+
 function renderInstallIndex() {
   const idx = document.getElementById("installIndex");
-  let rows = [];
+  installRows = [];
   Object.keys(DATA).forEach(gk => {
     const g = DATA[gk];
     Object.keys(g.categories).forEach(ck => {
-      rows.push({ gk, ck, label: g.categories[ck].label, game: g.name });
+      installRows.push({ gk, ck, cat: g.categories[ck], game: g.name });
     });
   });
-  idx.innerHTML = rows.map(r => `
-    <div class="idx-row" onclick="selectCategory('${r.gk}','${r.ck}')">
-      <div class="idx-left">
-        <span class="idx-cat">${r.label}</span>
-        <span class="idx-game">${r.game}</span>
+  idx.innerHTML = installRows.map((r, i) => `
+    <div class="idx-item">
+      <div class="idx-row" onclick="toggleInstallRow(${i})">
+        <div class="idx-left">
+          <span class="idx-cat">${r.cat.label}</span>
+          <span class="idx-game">${r.game}</span>
+        </div>
+        <span class="idx-arrow" id="idxArrow${i}">&#8595;</span>
       </div>
-      <span class="idx-arrow">&#8594;</span>
+      <div class="idx-panel" id="idxPanel${i}">
+        ${r.cat.install.map((s, si) => `
+          <div class="istep">
+            <div class="n">0${si + 1}</div>
+            <div><div class="t">${s.t}</div><div class="d">${s.d}</div></div>
+          </div>`).join("")}
+      </div>
     </div>`).join("");
 }
 
+function toggleInstallRow(i) {
+  const panel = document.getElementById("idxPanel" + i);
+  const wasOpen = panel.classList.contains("open");
+  document.querySelectorAll(".idx-panel.open").forEach(p => p.classList.remove("open"));
+  document.querySelectorAll(".idx-arrow").forEach(a => a.innerHTML = "&#8595;");
+  if (!wasOpen) {
+    panel.classList.add("open");
+    document.getElementById("idxArrow" + i).innerHTML = "&#8593;";
+  }
+}
+
+/* ---------- GAME / CATEGORY SELECTION ---------- */
 function selectGame(gameKey) {
   activeGame = gameKey;
   activeCat = Object.keys(DATA[gameKey].categories)[0];
@@ -58,6 +82,7 @@ function selectCategory(gameKey, catKey) {
   document.getElementById("modBrowser").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+/* ---------- MOD BROWSER (no install info here anymore) ---------- */
 function renderModBrowser() {
   const game = DATA[activeGame];
   const cats = Object.keys(game.categories);
@@ -67,26 +92,47 @@ function renderModBrowser() {
     cats.map(ck => `<div class="${ck === activeCat ? 'active' : ''}" onclick="selectCategory('${activeGame}','${ck}')">${game.categories[ck].label.toUpperCase()}</div>`).join("");
 
   const cat = game.categories[activeCat];
-  const stepsEl = document.getElementById("installStepsBlock");
-  stepsEl.innerHTML = `<div class="ih">How to install &mdash; ${cat.label} (${game.name})</div>` +
-    cat.install.map((s, i) => `<div class="istep"><div class="n">0${i + 1}</div><div><div class="t">${s.t}</div><div class="d">${s.d}</div></div></div>`).join("");
-
   const rowsEl = document.getElementById("modRows");
   if (cat.mods.length === 0) {
     rowsEl.innerHTML = `<div class="empty-state">No ${cat.label.toLowerCase()} uploaded yet — check back soon.</div>`;
     return;
   }
   rowsEl.innerHTML = cat.mods.map(m => `
-    <div class="mod-row">
+    <div class="mod-row" onclick="openModPopup('${activeGame}','${activeCat}','${m.id}')">
       <div>
         <div class="name">${m.name}</div>
-        <div class="meta">${m.version} &middot; ${m.size} &middot; updated ${m.updated}</div>
+        <div class="meta">${m.version} &middot; ${m.size || 'TBD'} &middot; updated ${m.updated}</div>
       </div>
-      <a class="dl-btn" href="${m.downloadUrl}">DOWNLOAD</a>
+      <span class="idx-arrow">&#8594;</span>
     </div>`).join("");
 }
 
-/* SEARCH — matches games, categories, and mods across the whole site */
+/* ---------- MOD POPUP ---------- */
+function openModPopup(gk, ck, modId) {
+  const cat = DATA[gk].categories[ck];
+  const m = cat.mods.find(x => x.id === modId);
+  if (!m) return;
+  const isLive = !!m.downloadUrl;
+
+  const body = document.getElementById("modModalBody");
+  body.innerHTML = `
+    ${m.previewGif ? `<img class="modal-gif" src="${m.previewGif}" alt="${m.name} preview">` : ""}
+    <h3 class="modal-title">${m.name}</h3>
+    <div class="modal-meta">${m.version} &middot; ${m.size || 'TBD'} &middot; updated ${m.updated} &middot; ${DATA[gk].name} / ${cat.label}</div>
+    ${m.description ? `<p class="modal-desc">${m.description}</p>` : ""}
+    ${m.features && m.features.length ? `<ul class="modal-features">${m.features.map(f => `<li>${f}</li>`).join("")}</ul>` : ""}
+    <a class="dl-btn modal-dl ${isLive ? '' : 'dl-btn-disabled'}" ${isLive ? `href="${m.downloadUrl}"` : `href="#" onclick="return false;" aria-disabled="true"`}>
+      ${isLive ? 'DOWNLOAD' : 'COMING SOON'}
+    </a>
+  `;
+  document.getElementById("modModal").classList.add("show");
+}
+
+function closeModPopup() {
+  document.getElementById("modModal").classList.remove("show");
+}
+
+/* ---------- SEARCH ---------- */
 function buildSearchIndex() {
   let items = [];
   Object.keys(DATA).forEach(gk => {
@@ -142,6 +188,14 @@ function goToResult(gk, ck) {
 document.getElementById("installNavLink").addEventListener("click", (e) => {
   e.preventDefault();
   document.getElementById("installSection").scrollIntoView({ behavior: "smooth" });
+});
+
+document.getElementById("modModalClose").addEventListener("click", closeModPopup);
+document.getElementById("modModal").addEventListener("click", (e) => {
+  if (e.target.id === "modModal") closeModPopup();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModPopup();
 });
 
 renderGameGrid();
