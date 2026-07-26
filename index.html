@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
   <nav class="wrap">
     <div class="brand">
@@ -31,7 +30,6 @@
     </div>
   </nav>
 </header>
-
 <section class="hero" id="homeTop">
   <div class="wrap">
     <img class="hero-logo" src="images/logo.png" alt="Bad Mods">
@@ -43,7 +41,6 @@
     </div>
   </div>
 </section>
-
 <section class="section" id="gamesSection">
   <div class="wrap">
     <div class="section-head">
@@ -51,25 +48,21 @@
       <span class="count" id="gameCount">2 SUPPORTED</span>
     </div>
     <div class="game-grid" id="gameGrid"></div>
-
     <div class="subpage-preview" id="modBrowser">
       <div class="subpage-tabs" id="subTabs"></div>
-      <div class="install-steps" id="installStepsBlock"></div>
       <div class="subpage-body" id="modRows"></div>
     </div>
   </div>
 </section>
-
 <section class="section" id="installSection" style="padding-top:0;">
   <div class="wrap">
     <div class="section-head">
       <h2>How to Install<span class="dot">.</span></h2>
-      <span class="count">SELECT ANY CATEGORY BELOW</span>
+      <span class="count">CLICK A CATEGORY TO EXPAND</span>
     </div>
     <div class="install-index" id="installIndex"></div>
   </div>
 </section>
-
 <section class="section" id="contact" style="padding-top:0;">
   <div class="wrap">
     <div class="section-head">
@@ -94,13 +87,19 @@
     </div>
   </div>
 </section>
-
 <footer>
   <div class="wrap">
     <p class="disclaimer">Bad Mods is not affiliated with, endorsed by, or sponsored by any game publisher listed on this site. All mods are used at your own risk. Report issues via the contact form.</p>
     <p>&copy; 2026 BAD MODS</p>
   </div>
 </footer>
+
+<div class="modal-overlay" id="modModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modModalClose" aria-label="Close">&times;</button>
+    <div id="modModalBody"></div>
+  </div>
+</div>
 
 <script src="js/mods-data.js"></script>
 <script src="js/script.js"></script>
