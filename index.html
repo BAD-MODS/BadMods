@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAD MODS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow+Condensed:wght@400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">
+      <img src="images/logo.png" alt="Bad Mods logo">
+    </div>
+    <div class="search-wrap">
+      <span class="icon">&#9906;</span>
+      <input id="searchInput" type="text" placeholder="search games or mods...">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <div class="navlinks">
+      <a href="#homeTop">HOME</a>
+      <div class="dropdown">
+        <button>GAMES &#9662;</button>
+        <div class="dropdown-menu" id="gamesDropdown"></div>
+      </div>
+      <a href="#" id="installNavLink">HOW TO INSTALL</a>
+      <a href="#contact">CONTACT / DONATE</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="homeTop">
+  <div class="wrap">
+    <img class="hero-logo" src="images/logo.png" alt="Bad Mods">
+    <p class="eyebrow">free mods, no bs, no accounts required</p>
+    <h1>Hand-built <span>scripts</span>, <span>maps</span> &amp; chaos for the games you already love.</h1>
+    <div class="hero-ctas">
+      <a href="#gamesSection" class="btn btn-primary">Browse Mods</a>
+      <a href="#installSection" class="btn btn-secondary">How to Install</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="gamesSection">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Games<span class="dot">.</span></h2>
+      <span class="count" id="gameCount">2 SUPPORTED</span>
+    </div>
+    <div class="game-grid" id="gameGrid"></div>
+
+    <div class="subpage-preview" id="modBrowser">
+      <div class="subpage-tabs" id="subTabs"></div>
+      <div class="install-steps" id="installStepsBlock"></div>
+      <div class="subpage-body" id="modRows"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="installSection" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How to Install<span class="dot">.</span></h2>
+      <span class="count">SELECT ANY CATEGORY BELOW</span>
+    </div>
+    <div class="install-index" id="installIndex"></div>
+  </div>
+</section>
+
+<section class="section" id="contact" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Contact / Donate<span class="dot">.</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="panel">
+        <h3>SEND A MESSAGE</h3>
+        <input type="text" placeholder="Your name">
+        <input type="text" placeholder="Email">
+        <textarea placeholder="Bug report, mod request, whatever..."></textarea>
+        <a href="#" class="btn btn-primary" style="width:100%;text-align:center;">Send</a>
+      </div>
+      <div class="panel">
+        <h3>SUPPORT THE WORK</h3>
+        <div class="donate-tiers">
+          <div class="donate-tier"><div><div class="amt">$3</div><div class="label">buy me a coffee</div></div><button>DONATE</button></div>
+          <div class="donate-tier"><div><div class="amt">$10</div><div class="label">covers hosting for a month</div></div><button>DONATE</button></div>
+          <div class="donate-tier"><div><div class="amt">CUSTOM</div><div class="label">any amount helps</div></div><button>DONATE</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer">Bad Mods is not affiliated with, endorsed by, or sponsored by any game publisher listed on this site. All mods are used at your own risk. Report issues via the contact form.</p>
+    <p>&copy; 2026 BAD MODS</p>
+  </div>
+</footer>
+
+<script src="js/mods-data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
