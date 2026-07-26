@@ -10,44 +10,37 @@
    2. Right-click the uploaded file on the release page and copy
       its link. It'll look like:
       https://github.com/YOURORG/BADMODS/releases/download/v1.0/mymod.zip
-   3. Paste that link into "downloadUrl" below on a new mod entry.
+   3. Paste that link into "downloadUrl" below on the mod's entry.
+      As soon as downloadUrl is filled in, the popup's download
+      button automatically goes live — no other change needed.
 
-   EXAMPLE MOD ENTRY (copy this into any mods:[] array and edit):
-
+   MOD ENTRY FIELDS:
    {
-     id: "unique-short-id",          // no spaces, must be unique
+     id: "unique-short-id",        // no spaces, must be unique
      name: "Mod Display Name",
      version: "v1.0",
-     size: "4MB",
+     size: "4MB",                  // leave "" until you know it
      updated: "Jul 2026",
-     downloadUrl: "https://github.com/YOURORG/BADMODS/releases/download/TAG/FILE.zip"
+     description: "1-3 sentences shown in the popup.",
+     features: ["short bullet", "short bullet"],   // optional, [] to skip
+     previewGif: "images/mods/your-mod.gif",        // optional, "" to skip
+     downloadUrl: ""               // "" = greyed out "COMING SOON" button
    }
 
    HOW TO ADD A NEW CATEGORY (e.g. "Vehicles"):
    Add a new key inside a game's "categories" object, following the
-   same shape as the ones already there (label, install steps, mods).
+   same shape as the ones already there (label, install, mods).
 
    HOW TO ADD A NEW GAME:
    Copy the whole "beamng: { ... }" block, rename the key and the
    "name"/"thumb" fields, drop a cover image into /images/, and
    point "thumb" at it.
    ============================================================ */
-
 const DATA = {
   beamng: {
     name: "BeamNG.drive",
     thumb: "images/beamng-cover.png",
     categories: {
-      scripts: {
-        label: "Scripts",
-        install: [
-          { t: "Extract to the Lua folder", d: "Unzip into Documents/BeamNG.drive/lua/scripts/" },
-          { t: "Enable it in-game", d: "Launch BeamNG, open the mod manager, tick the script on." }
-        ],
-        mods: [
-          // add your Scripts mods here
-        ]
-      },
       maps: {
         label: "Maps",
         install: [
@@ -55,30 +48,11 @@ const DATA = {
           { t: "Select it in-game", d: "Choose it from the level select screen after restarting." }
         ],
         mods: [
-          // add your Maps mods here
-        ]
-      },
-      vehicles: {
-        label: "Vehicles",
-        install: [
-          { t: "Extract to the vehicles folder", d: "Unzip into Documents/BeamNG.drive/vehicles/" }
-        ],
-        mods: [
-          // add your Vehicles mods here
-        ]
-      },
-      skins: {
-        label: "Skins",
-        install: [
-          { t: "Drop into the car's skins folder", d: "Place the zip in vehicles/<car>/skins/" }
-        ],
-        mods: [
-          // add your Skins mods here
+          // add your Maps mod here
         ]
       }
     }
   },
-
   gtav: {
     name: "GTA V",
     thumb: "images/gta5-cover.jpg",
@@ -90,7 +64,28 @@ const DATA = {
           { t: "Drop into the scripts folder", d: "Place the .asi and .lua/.cs files in your GTA V root scripts/ folder." }
         ],
         mods: [
-          // add your Scripts mods here
+          {
+            id: "weapon-inspect",
+            name: "Weapon Inspect",
+            version: "v1.0",
+            size: "",
+            updated: "Jul 2026",
+            description: "",
+            features: [],
+            previewGif: "images/mods/weapon-inspect.gif",
+            downloadUrl: ""
+          },
+          {
+            id: "fold-hands",
+            name: "Fold Hands",
+            version: "v1.0",
+            size: "",
+            updated: "Jul 2026",
+            description: "",
+            features: [],
+            previewGif: "images/mods/fold-hands.gif",
+            downloadUrl: ""
+          }
         ]
       }
     }
