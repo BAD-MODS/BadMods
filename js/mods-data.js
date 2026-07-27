@@ -22,8 +22,12 @@
      size: "4MB",                  // leave "" until you know it
      updated: "Jul 2026",
      description: "1-3 sentences shown in the popup.",
+     install: [                    // steps shown in the popup's
+       { t: "Step title", d: "Step detail sentence." }   // "How to Install" section
+     ],                             // leave [] to fall back to the
+                                     // category's general install steps
      features: ["short bullet", "short bullet"],   // optional, [] to skip
-     previewGif: "images/mods/your-mod.gif",        // optional, "" to skip
+     previewGif: "images/mods/your-mod.gif",        // used as card thumbnail + popup preview
      downloadUrl: ""               // "" = greyed out "COMING SOON" button
    }
 
@@ -71,6 +75,7 @@ const DATA = {
             size: "",
             updated: "Jul 2026",
             description: "",
+            install: [],
             features: [],
             previewGif: "images/mods/weapon-inspect.gif",
             downloadUrl: ""
@@ -82,6 +87,7 @@ const DATA = {
             size: "",
             updated: "Jul 2026",
             description: "",
+            install: [],
             features: [],
             previewGif: "images/mods/fold-hands.gif",
             downloadUrl: ""
