@@ -70,13 +70,13 @@ const DATA = {
             id: "weapon-inspect",
             name: "Weapon Inspect",
             version: "v1.0",
-            size: "",
+            size: "3KB",
             updated: "Jul 2026",
-            description: "This mod lets you inspect your currently equipped weapon with a simple keybind and on-screen prompt. Default key is set to F, fully configurable via the included .ini file.",
+            description: "This mod lets you inspect your currently equipped weapon with a simple keybind and on-screen prompt. Default key is set to F, fully configurable via the included .ini file, including whether the help prompt is shown.",
             install: [],
-            features: ["Configurable keybind via .ini", "On-screen prompt to toggle"],
+            features: ["Configurable keybind via .ini", "Toggleable help-text prompt", "On-screen prompt while inspecting"],
             previewGif: "images/mods/weapon-inspect.gif",
-            downloadUrl: ""
+            downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/weapon-inspect-v1.0/weapon-inspect.zip"
           },
           {
             id: "fold-hands",
