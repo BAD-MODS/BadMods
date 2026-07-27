@@ -25,7 +25,7 @@ function renderDropdown() {
   }).join("");
 }
 
-/* ---------- HOW TO INSTALL (accordion) ---------- */
+/* ---------- HOW TO INSTALL (accordion, general per-category) ---------- */
 let installRows = [];
 
 function renderInstallIndex() {
@@ -82,7 +82,7 @@ function selectCategory(gameKey, catKey) {
   document.getElementById("modBrowser").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-/* ---------- MOD BROWSER (no install info here anymore) ---------- */
+/* ---------- MOD BROWSER — card grid (gta5mods-style) ---------- */
 function renderModBrowser() {
   const game = DATA[activeGame];
   const cats = Object.keys(game.categories);
@@ -97,14 +97,21 @@ function renderModBrowser() {
     rowsEl.innerHTML = `<div class="empty-state">No ${cat.label.toLowerCase()} uploaded yet — check back soon.</div>`;
     return;
   }
-  rowsEl.innerHTML = cat.mods.map(m => `
-    <div class="mod-row" onclick="openModPopup('${activeGame}','${activeCat}','${m.id}')">
-      <div>
-        <div class="name">${m.name}</div>
-        <div class="meta">${m.version} &middot; ${m.size || 'TBD'} &middot; updated ${m.updated}</div>
+  rowsEl.innerHTML = `<div class="mod-grid">` + cat.mods.map(m => {
+    const isLive = !!m.downloadUrl;
+    return `
+    <div class="mod-card" onclick="openModPopup('${activeGame}','${activeCat}','${m.id}')">
+      <div class="mod-card-thumb">
+        ${m.previewGif ? `<img src="${m.previewGif}" alt="${m.name}">` : `<div class="mod-card-noimg">NO PREVIEW</div>`}
+        <span class="mod-card-version">${m.version}</span>
+        ${!isLive ? `<span class="mod-card-status">COMING SOON</span>` : ""}
       </div>
-      <span class="idx-arrow">&#8594;</span>
-    </div>`).join("");
+      <div class="mod-card-body">
+        <h3>${m.name}</h3>
+        <div class="mod-card-meta">${m.size || 'TBD'} &middot; updated ${m.updated}</div>
+      </div>
+    </div>`;
+  }).join("") + `</div>`;
 }
 
 /* ---------- MOD POPUP ---------- */
@@ -113,14 +120,42 @@ function openModPopup(gk, ck, modId) {
   const m = cat.mods.find(x => x.id === modId);
   if (!m) return;
   const isLive = !!m.downloadUrl;
+  const installSteps = (m.install && m.install.length) ? m.install : cat.install;
 
   const body = document.getElementById("modModalBody");
   body.innerHTML = `
     ${m.previewGif ? `<img class="modal-gif" src="${m.previewGif}" alt="${m.name} preview">` : ""}
-    <h3 class="modal-title">${m.name}</h3>
-    <div class="modal-meta">${m.version} &middot; ${m.size || 'TBD'} &middot; updated ${m.updated} &middot; ${DATA[gk].name} / ${cat.label}</div>
-    ${m.description ? `<p class="modal-desc">${m.description}</p>` : ""}
-    ${m.features && m.features.length ? `<ul class="modal-features">${m.features.map(f => `<li>${f}</li>`).join("")}</ul>` : ""}
+
+    <div class="modal-header-row">
+      <h3 class="modal-title">${m.name}</h3>
+      <span class="modal-version-badge">${m.version}</span>
+    </div>
+    <div class="modal-meta">${m.size || 'TBD'} &middot; updated ${m.updated} &middot; ${DATA[gk].name} / ${cat.label}</div>
+
+    ${m.description ? `
+      <div class="modal-section">
+        <div class="modal-section-h">Overview</div>
+        <p class="modal-desc">${m.description}</p>
+      </div>` : ""}
+
+    ${m.features && m.features.length ? `
+      <div class="modal-section">
+        <div class="modal-section-h">Features</div>
+        <ul class="modal-features">${m.features.map(f => `<li>${f}</li>`).join("")}</ul>
+      </div>` : ""}
+
+    ${installSteps && installSteps.length ? `
+      <div class="modal-section">
+        <div class="modal-section-h">How to Install</div>
+        <div class="modal-install-steps">
+          ${installSteps.map((s, i) => `
+            <div class="istep">
+              <div class="n">0${i + 1}</div>
+              <div><div class="t">${s.t}</div><div class="d">${s.d}</div></div>
+            </div>`).join("")}
+        </div>
+      </div>` : ""}
+
     <a class="dl-btn modal-dl ${isLive ? '' : 'dl-btn-disabled'}" ${isLive ? `href="${m.downloadUrl}"` : `href="#" onclick="return false;" aria-disabled="true"`}>
       ${isLive ? 'DOWNLOAD' : 'COMING SOON'}
     </a>
