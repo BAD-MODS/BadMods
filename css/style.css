@@ -362,27 +362,12 @@ nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76
   pointer-events:none;
 }
 
-/* CONTACT/DONATE */
-.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;}
+/* DONATE */
+.donate-panel-wrap{max-width:520px;}
 .panel{background:var(--bg-panel);border:1px solid var(--line);padding:24px;}
 .panel h3{font-family:'Bungee',cursive;font-size:15px;margin-bottom:14px;color:var(--gold);}
-.panel input,.panel textarea{
-  width:100%;background:var(--bg);border:1px solid var(--line);color:var(--bone);
-  padding:10px 12px;margin-bottom:12px;font-family:'Barlow Condensed',sans-serif;font-size:14px;
-}
-.panel textarea{min-height:90px;resize:vertical;}
-.donate-tiers{display:flex;flex-direction:column;gap:10px;}
-.donate-tier{
-  display:flex;align-items:center;justify-content:space-between;
-  border:1px solid var(--line);padding:12px 14px;background:var(--bg);
-}
-.donate-tier .amt{font-family:'Bungee',cursive;color:var(--gold);font-size:13px;}
-.donate-tier .label{font-family:'Space Mono',monospace;font-size:10px;color:var(--smoke);}
-.donate-tier button{
-  background:none;border:1px solid var(--teal);color:var(--teal);
-  font-family:'Bungee',cursive;font-size:10px;padding:6px 12px;cursor:pointer;
-}
-.donate-tier button:hover{background:var(--teal);color:#0f1c1b;}
+#kofiEmbed{overflow:hidden;border:1px solid var(--line);}
+#kofiEmbed iframe{display:block;width:100%;border:none;}
 
 footer{
   border-top:2px solid var(--line);
@@ -396,7 +381,6 @@ footer .disclaimer{max-width:640px;margin:0 auto 10px;line-height:1.6;}
 @media (max-width:900px){
   .navlinks{display:none;}
   .search-wrap{max-width:none;}
-  .contact-grid{grid-template-columns:1fr;}
 }
 
 @media (max-width:600px){
