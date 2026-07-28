@@ -62,7 +62,7 @@ const DATA = {
         install: [
           { t: "Install Script Hook V first", d: "Required dependency for all GTA V .asi/.cs mods to function." },
           { t: "Install ScriptHookVDotNet", d: "Required dependency for .cs script mods — enables the game to load C# scripts." },
-          { t: "Drop into the scripts folder", d: "Place the .cs and .ini files in your GTA V root scripts/ folder." },
+          { t: "Extract and drop into the scripts folder", d: "Place the .cs and .ini files in your GTA V root scripts/ folder." },
           { t: "Launch the game", d: "Enjoy." }
         ],
         mods: [
