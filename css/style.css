@@ -363,9 +363,9 @@ nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76
 }
 
 /* DONATE */
-.donate-panel-wrap{max-width:520px;}
+.donate-panel-wrap{max-width:380px;margin:0 auto;}
 .panel{background:var(--bg-panel);border:1px solid var(--line);padding:24px;}
-.panel h3{font-family:'Bungee',cursive;font-size:15px;margin-bottom:14px;color:var(--gold);}
+.panel h3{font-family:'Bungee',cursive;font-size:15px;margin-bottom:14px;color:var(--gold);text-align:center;}
 #kofiEmbed{overflow:hidden;border:1px solid var(--line);}
 #kofiEmbed iframe{display:block;width:100%;border:none;}
 
