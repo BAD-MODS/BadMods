@@ -1,61 +1,35 @@
 # BAD MODS
 
-Free mods, no bs, no accounts required.
+**Free mods. No BS. No accounts required.**
 
-## File structure
+Hand-built scripts and mods for BeamNG.drive and GTA V, made by
+[Black Arc Development](https://blackarcdevelopment.github.io/index.html).
 
-```
-badmods-site/
-├── index.html          <- page structure, don't need to touch this often
-├── css/
-│   └── style.css        <- all visual styling
-├── js/
-│   ├── mods-data.js      <- THE FILE YOU EDIT TO ADD MODS
-│   └── script.js          <- site behavior, don't need to touch this often
-├── images/
-│   ├── logo.png
-│   ├── gta5-cover.jpg
-│   └── beamng-cover.png
-└── README.md
-```
+🔗 **Browse and download: [bad-mods.github.io/BadMods](https://bad-mods.github.io/BadMods/)**
 
-## Adding a mod (do this every time)
+## Installing
 
-1. Go to your **BADMODS** repo on GitHub → **Releases** → **Draft a new release**.
-2. Give it a tag (e.g. `v1.0`), a title, and attach your mod's zip file.
-3. Publish the release.
-4. Right-click the uploaded file link on the release page → **Copy link**. It'll look like:
-   ```
-   https://github.com/YOURORG/BADMODS/releases/download/v1.0/mymod.zip
-   ```
-5. Open `js/mods-data.js` and add a new entry inside the right game + category's `mods:` array:
-   ```js
-   {
-     id: "unique-short-id",
-     name: "Mod Display Name",
-     version: "v1.0",
-     size: "4MB",
-     updated: "Jul 2026",
-     downloadUrl: "https://github.com/YOURORG/BADMODS/releases/download/v1.0/mymod.zip"
-   }
-   ```
-6. Save, commit, push. That's it — no other file needs to change.
+**BeamNG.drive**
+1. Drop the mod's `.zip` into your BeamNG mods folder (don't unzip it):
+2. Make sure it's enabled in the in-game Mod Manager.
 
-The download button links straight to that file. GitHub serves release files in a way that
-makes the browser download them directly — the page never navigates and no GitHub tab opens.
+**GTA V (script mods)**
+1. Install [Script Hook V](http://www.dev-c.com/gtav/scripthookv/) and
+   [ScriptHookVDotNet](https://github.com/scripthookvdotnet/scripthookvdotnet).
+2. Place the mod's `.cs` and `.ini` files in the `scripts/` folder in your GTA V directory.
 
-## Testing locally before you push
+Some mods have extra steps. Check the mod's page on the site.
 
-You can just double-click `index.html` and it'll open and work in your browser, no local
-server needed — the data file is loaded as a normal script, not fetched, so there's no
-browser security block on opening it directly from disk.
+## Support
 
-## Adding a new category or game
+BAD MODS is free and always will be. If you want to support the work:
+[ko-fi.com/blackarcdev](https://ko-fi.com/blackarcdev)
 
-See the comments at the top of `js/mods-data.js` for the exact format.
+## Credits
 
-## Deploying
+- Site and mods by [Black Arc Development](https://blackarcdevelopment.github.io/index.html)
 
-Push this whole folder to the root of your `BADMODS` repo's `main` branch, then turn on
-GitHub Pages in the repo's Settings → Pages (source: `main`, folder: `/root`). Free, no
-billing risk as long as the repo stays public.
+---
+
+BAD MODS is not affiliated with, endorsed by, or sponsored by any game publisher listed
+here. All mods are used at your own risk.
