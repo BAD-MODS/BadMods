@@ -1,239 +1,466 @@
-let activeGame = Object.keys(DATA)[0];
-let activeCat = Object.keys(DATA[activeGame].categories)[0];
+:root{
+  --bg:#131010;
+  --bg-panel:#1c1815;
+  --bg-panel-hi:#26201b;
+  --red:#dd402b;
+  --red-dim:#8c2c1f;
+  --gold:#f0b429;
+  --teal:#2f9e97;
+  --bone:#e9dfc8;
+  --smoke:#7a7267;
+  --line:#3a332c;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--bone);
+  font-family:'Barlow Condensed',sans-serif;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(221,64,43,0.06), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(47,158,151,0.06), transparent 40%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
 
-function renderGameGrid() {
-  const grid = document.getElementById("gameGrid");
-  const keys = Object.keys(DATA);
-  document.getElementById("gameCount").textContent = keys.length + " SUPPORTED";
-  grid.innerHTML = keys.map(k => {
-    const g = DATA[k];
-    const catCount = Object.keys(g.categories).length;
-    const modCount = Object.values(g.categories).reduce((a, c) => a + c.mods.length, 0);
-    return `<div class="game-card" onclick="selectGame('${k}')">
-      <div class="thumb"><img src="${g.thumb}" alt="${g.name}"></div>
-      <div class="body"><h3>${g.name}</h3><p>${modCount} mods across ${catCount} categories</p></div>
-    </div>`;
-  }).join("");
+/* NAV */
+header{
+  border-bottom:2px solid var(--line);
+  background:linear-gradient(180deg, var(--bg-panel), var(--bg));
+  position:sticky; top:0; z-index:50;
+}
+nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:20px;}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;}
+.brand img{height:56px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));}
+
+.search-wrap{position:relative;flex:1 1 auto;max-width:340px;}
+.search-wrap input{
+  width:100%;
+  background:var(--bg);
+  border:1px solid var(--line);
+  color:var(--bone);
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  padding:10px 14px 10px 34px;
+}
+.search-wrap input:focus{outline:none;border-color:var(--gold);}
+.search-wrap .icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--smoke);font-size:13px;pointer-events:none;}
+.search-results{
+  position:absolute;top:100%;left:0;right:0;margin-top:6px;
+  background:var(--bg-panel-hi);
+  border:1px solid var(--line);
+  border-top:2px solid var(--gold);
+  max-height:320px;overflow-y:auto;
+  display:none;
+  z-index:60;
+  box-shadow:0 12px 24px rgba(0,0,0,0.5);
+}
+.search-results.show{display:block;}
+.search-results .sr-item{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;
+}
+.search-results .sr-item:last-child{border-bottom:none;}
+.search-results .sr-item:hover{background:var(--red-dim);}
+.search-results .sr-name{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;}
+.search-results .sr-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);white-space:nowrap;}
+.search-results .sr-empty{padding:14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--smoke);}
+
+.navlinks{display:flex;align-items:center;gap:2px;flex:0 0 auto;}
+.navlinks > a, .navlinks > .dropdown > button{
+  font-family:'Bungee',cursive;
+  font-size:13px;
+  letter-spacing:0.5px;
+  color:var(--bone);
+  text-decoration:none;
+  background:none;border:none;
+  padding:10px 16px;
+  cursor:pointer;
+  position:relative;
+  transition:color .15s ease;
+}
+.navlinks > a::after, .navlinks > .dropdown > button::after{
+  content:"";position:absolute;left:16px;right:16px;bottom:6px;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .18s ease;
+}
+.navlinks > a:hover, .navlinks > .dropdown:hover > button{color:var(--gold);}
+.navlinks > a:hover::after, .navlinks > .dropdown:hover > button::after{transform:scaleX(1);}
+.dropdown{position:relative;}
+.dropdown-menu{
+  position:absolute;top:100%;left:0;
+  background:var(--bg-panel-hi);
+  border:1px solid var(--line);
+  border-top:2px solid var(--gold);
+  min-width:190px;
+  display:none;
+  box-shadow:0 12px 24px rgba(0,0,0,0.5);
+}
+.dropdown:hover .dropdown-menu{display:block;}
+.dropdown-menu a{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 16px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;font-size:15px;
+  color:var(--bone);text-decoration:none;
+  border-bottom:1px solid var(--line);
+}
+.dropdown-menu a:last-child{border-bottom:none;}
+.dropdown-menu a:hover{background:var(--red-dim);color:var(--bone);}
+.dropdown-menu .tag{
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);
+  margin-left:auto;
 }
 
-function renderDropdown() {
-  const dd = document.getElementById("gamesDropdown");
-  dd.innerHTML = Object.keys(DATA).map(k => {
-    const g = DATA[k];
-    const modCount = Object.values(g.categories).reduce((a, c) => a + c.mods.length, 0);
-    return `<a href="#" onclick="selectGame('${k}');return false;">${g.name} <span class="tag">${modCount}</span></a>`;
-  }).join("");
+/* HERO */
+.hero{
+  padding:64px 0 56px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:2px solid var(--line);
+}
+.hero-logo{max-width:340px;width:70%;margin:0 auto 18px;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.55));}
+.hero p.eyebrow{
+  font-family:'Space Mono',monospace;
+  color:var(--teal);
+  letter-spacing:3px;
+  font-size:12px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hero h1{
+  font-family:'Bungee',cursive;
+  font-size:20px;
+  color:var(--bone);
+  line-height:1.5;
+  max-width:560px;
+  margin:0 auto 26px;
+}
+.hero h1 span{color:var(--gold);}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  font-family:'Bungee',cursive;
+  font-size:13px;
+  padding:14px 26px;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  letter-spacing:0.5px;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+.btn-primary{background:var(--red);color:var(--bone);}
+.btn-primary:hover{background:#f04b32;}
+.btn-secondary{background:var(--bg-panel-hi);color:var(--gold);border:1px solid var(--gold);}
+.btn-secondary:hover{background:var(--gold);color:#1c1815;}
+
+/* SECTION LABELS */
+.section{padding:56px 0;}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px;border-bottom:2px solid var(--line);padding-bottom:14px;flex-wrap:wrap;gap:8px;}
+.section-head h2{
+  font-family:'Bungee',cursive;font-size:22px;color:var(--bone);
+}
+.section-head h2 .dot{color:var(--red);}
+.section-head span.count{font-family:'Space Mono',monospace;font-size:12px;color:var(--smoke);}
+
+/* GAME GRID */
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;}
+.game-card{
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .15s ease, border-color .15s ease;
+}
+.game-card:hover{transform:translateY(-4px);border-color:var(--gold);}
+.game-card .thumb{
+  height:150px;
+  background:linear-gradient(135deg, var(--bg-panel-hi), #100d0b 70%);
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:3px solid var(--red);
+  position:relative;
+  overflow:hidden;
+}
+.game-card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.game-card:nth-child(2) .thumb{border-bottom-color:var(--teal);}
+.game-card .body{padding:14px 16px 16px;}
+.game-card h3{font-family:'Bungee',cursive;font-size:14px;margin-bottom:6px;color:var(--bone);}
+.game-card p{font-family:'Space Mono',monospace;font-size:11px;color:var(--smoke);}
+
+/* INSTALL — game switcher (only the selected game's steps show) */
+.install-game-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.install-game-tab{
+  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.5px;
+  background:var(--bg-panel);color:var(--smoke);
+  border:1px solid var(--line);padding:8px 14px;cursor:pointer;
+  transition:color .12s ease, border-color .12s ease;
+}
+.install-game-tab:hover{color:var(--bone);border-color:var(--smoke);}
+.install-game-tab.active{color:var(--gold);border-color:var(--gold);background:var(--bg-panel-hi);}
+
+/* INSTALL INDEX (general, accordion) */
+.install-index{display:flex;flex-direction:column;border:none;}
+.idx-item{border:1px solid var(--line);border-top:none;}
+.idx-item:first-child{border-top:1px solid var(--line);}
+.install-index .idx-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  background:var(--bg-panel);cursor:pointer;
+  transition:background .12s ease;
+}
+.install-index .idx-row:hover{background:var(--bg-panel-hi);}
+.idx-left{display:flex;align-items:center;gap:12px;}
+.idx-cat{font-family:'Bungee',cursive;font-size:13px;color:var(--bone);}
+.idx-game{
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);
+  border:1px solid var(--teal);padding:3px 8px;letter-spacing:0.5px;
+}
+.idx-arrow{color:var(--gold);font-family:'Bungee',cursive;font-size:14px;}
+
+.idx-panel{
+  max-height:0;overflow:hidden;
+  background:var(--bg-panel-hi);
+  transition:max-height .25s ease;
+}
+.idx-panel.open{max-height:600px;padding:14px 18px;}
+.idx-panel .istep{display:flex;gap:10px;padding:6px 0;}
+.idx-panel .istep .n{font-family:'Bungee',cursive;color:var(--red);font-size:13px;min-width:20px;}
+.idx-panel .istep .t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--bone);}
+.idx-panel .istep .d{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--smoke);}
+
+/* GAME/CATEGORY PREVIEW (mod browser) */
+.subpage-preview{
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  margin-top:12px;
+  scroll-margin-top:96px;
+}
+.subpage-tabs{display:flex;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.subpage-tabs div{
+  font-family:'Bungee',cursive;font-size:11px;
+  padding:12px 20px;color:var(--smoke);
+  border-right:1px solid var(--line);
+  cursor:pointer;
+}
+.subpage-tabs div.active{color:var(--gold);background:var(--bg-panel-hi);border-bottom:2px solid var(--gold);margin-bottom:-1px;}
+
+.subpage-body{padding:20px;}
+
+/* MOD CARD GRID (gta5mods-style) */
+.mod-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:18px;
+}
+.mod-card{
+  background:var(--bg);
+  border:1px solid var(--line);
+  cursor:pointer;
+  overflow:hidden;
+  transition:transform .15s ease, border-color .15s ease;
+}
+.mod-card:hover{transform:translateY(-4px);border-color:var(--gold);}
+.mod-card-thumb{
+  position:relative;
+  height:140px;
+  background:linear-gradient(135deg, var(--bg-panel-hi), #100d0b 70%);
+  overflow:hidden;
+}
+.mod-card-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.mod-card-noimg{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--smoke);letter-spacing:1px;
+}
+.mod-card-version{
+  position:absolute;top:8px;right:8px;
+  background:rgba(19,16,16,0.85);
+  color:var(--gold);
+  font-family:'Space Mono',monospace;font-size:10px;
+  padding:3px 8px;border:1px solid var(--gold);
+}
+.mod-card-status{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(19,16,16,0.9);
+  color:var(--smoke);
+  font-family:'Bungee',cursive;font-size:10px;
+  text-align:center;padding:6px 0;letter-spacing:1px;
+  border-top:1px solid var(--line);
+}
+.mod-card-body{padding:12px 14px 14px;}
+.mod-card-body h3{font-family:'Bungee',cursive;font-size:13px;color:var(--bone);margin-bottom:6px;line-height:1.3;}
+.mod-card-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--smoke);}
+
+.empty-state{
+  padding:24px 0;text-align:center;
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--smoke);
 }
 
-/* ---------- HOW TO INSTALL (accordion, general per-category) ---------- */
-let installRows = [];
+/* MOD POPUP MODAL — enlarged */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(10,8,7,0.82);
+  display:none;align-items:center;justify-content:center;
+  z-index:200;padding:24px;
+}
+.modal-overlay.show{display:flex;}
+.modal-box{
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-top:3px solid var(--gold);
+  max-width:720px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  padding:0 0 26px;position:relative;
+}
+.modal-close{
+  position:absolute;top:14px;right:16px;
+  background:rgba(19,16,16,0.7);
+  border:1px solid var(--line);
+  width:32px;height:32px;
+  color:var(--bone);
+  font-size:20px;cursor:pointer;line-height:1;
+  z-index:2;
+}
+.modal-close:hover{color:var(--gold);border-color:var(--gold);}
+.modal-gif{width:100%;max-height:380px;object-fit:cover;display:block;border-bottom:1px solid var(--line);margin-bottom:22px;}
 
-function renderInstallIndex() {
-  const idx = document.getElementById("installIndex");
-  installRows = [];
-  Object.keys(DATA).forEach(gk => {
-    const g = DATA[gk];
-    Object.keys(g.categories).forEach(ck => {
-      installRows.push({ gk, ck, cat: g.categories[ck], game: g.name });
-    });
-  });
-  idx.innerHTML = installRows.map((r, i) => `
-    <div class="idx-item">
-      <div class="idx-row" onclick="toggleInstallRow(${i})">
-        <div class="idx-left">
-          <span class="idx-cat">${r.cat.label}</span>
-          <span class="idx-game">${r.game}</span>
-        </div>
-        <span class="idx-arrow" id="idxArrow${i}">&#8595;</span>
-      </div>
-      <div class="idx-panel" id="idxPanel${i}">
-        ${r.cat.install.map((s, si) => `
-          <div class="istep">
-            <div class="n">0${si + 1}</div>
-            <div><div class="t">${s.t}</div><div class="d">${s.d}</div></div>
-          </div>`).join("")}
-      </div>
-    </div>`).join("");
+/* POPUP GALLERY (mods with several pics/gifs) */
+.gallery{border-bottom:1px solid var(--line);margin-bottom:22px;background:#0d0b0a;}
+.gallery-stage{position:relative;aspect-ratio:16/9;max-height:405px;width:100%;background:#0d0b0a;}
+.gallery-stage img{width:100%;height:100%;object-fit:contain;display:block;}
+.gallery-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:38px;height:54px;
+  background:rgba(19,16,16,0.7);border:1px solid var(--line);
+  color:var(--bone);font-size:28px;line-height:1;cursor:pointer;
+  transition:color .12s ease, border-color .12s ease;
+}
+.gallery-nav:hover{color:var(--gold);border-color:var(--gold);}
+.gallery-nav.prev{left:10px;}
+.gallery-nav.next{right:10px;}
+.gallery-count{
+  position:absolute;bottom:10px;right:10px;
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--bone);
+  background:rgba(19,16,16,0.75);border:1px solid var(--line);padding:3px 8px;
+}
+.gallery-strip{
+  display:flex;gap:8px;padding:10px;overflow-x:auto;
+  border-top:1px solid var(--line);background:var(--bg-panel-hi);
+}
+.gallery-thumb{
+  position:relative;flex:0 0 96px;height:54px;padding:0;
+  background:#0d0b0a;border:2px solid var(--line);cursor:pointer;opacity:0.6;
+  transition:opacity .12s ease, border-color .12s ease;
+}
+.gallery-thumb:hover{opacity:1;}
+.gallery-thumb.active{opacity:1;border-color:var(--gold);}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-thumb-tag{
+  position:absolute;bottom:2px;left:2px;
+  font-family:'Space Mono',monospace;font-size:8px;color:#1c1815;
+  background:var(--gold);padding:1px 4px;
 }
 
-function toggleInstallRow(i) {
-  const panel = document.getElementById("idxPanel" + i);
-  const wasOpen = panel.classList.contains("open");
-  document.querySelectorAll(".idx-panel.open").forEach(p => p.classList.remove("open"));
-  document.querySelectorAll(".idx-arrow").forEach(a => a.innerHTML = "&#8595;");
-  if (!wasOpen) {
-    panel.classList.add("open");
-    document.getElementById("idxArrow" + i).innerHTML = "&#8593;";
-  }
+.modal-header-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 26px;margin-bottom:6px;flex-wrap:wrap;
+}
+.modal-title{font-family:'Bungee',cursive;font-size:24px;color:var(--bone);}
+.modal-version-badge{
+  font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);
+  border:1px solid var(--gold);padding:4px 10px;white-space:nowrap;
+}
+.modal-meta{
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);
+  padding:0 26px;margin-bottom:20px;
 }
 
-/* ---------- GAME / CATEGORY SELECTION ---------- */
-function selectGame(gameKey) {
-  activeGame = gameKey;
-  activeCat = Object.keys(DATA[gameKey].categories)[0];
-  renderModBrowser();
-  document.getElementById("modBrowser").scrollIntoView({ behavior: "smooth", block: "start" });
+.modal-section{padding:0 26px;margin-bottom:22px;}
+.modal-section-h{
+  font-family:'Bungee',cursive;font-size:13px;color:var(--gold);
+  letter-spacing:0.5px;margin-bottom:10px;
+  border-bottom:1px solid var(--line);padding-bottom:8px;
+}
+.modal-desc{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--bone);line-height:1.6;}
+.modal-features{margin-left:18px;font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--bone);}
+.modal-features li{margin-bottom:6px;}
+.modal-subfeatures{margin:6px 0 2px 18px;list-style:square;color:var(--smoke);font-size:14px;}
+.modal-subfeatures li{margin-bottom:4px;}
+.modal-para + .modal-para{margin-top:10px;}
+
+/* controls table (key / action) */
+.modal-keys{display:flex;flex-direction:column;border:1px solid var(--line);}
+.modal-key-row{display:flex;align-items:baseline;gap:14px;padding:8px 12px;border-top:1px solid var(--line);}
+.modal-key-row:first-child{border-top:none;}
+.modal-key-row:nth-child(odd){background:var(--bg-panel-hi);}
+.modal-key{
+  flex:0 0 150px;
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);
+}
+.modal-key-action{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--bone);}
+@media (max-width:600px){
+  .modal-key-row{flex-direction:column;gap:2px;}
+  .modal-key{flex:none;}
 }
 
-function selectCategory(gameKey, catKey) {
-  activeGame = gameKey;
-  activeCat = catKey;
-  renderModBrowser();
-  document.getElementById("modBrowser").scrollIntoView({ behavior: "smooth", block: "start" });
+.modal-install-steps .istep{display:flex;gap:12px;padding:9px 0;}
+.modal-install-steps .istep .n{font-family:'Bungee',cursive;color:var(--red);font-size:15px;min-width:24px;}
+.modal-install-steps .istep .t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--bone);}
+.modal-install-steps .istep .d{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--smoke);}
+
+.modal-dl{
+  display:block;width:calc(100% - 52px);margin:6px 26px 0;
+  text-align:center;font-size:13px;padding:16px 26px;
 }
 
-/* ---------- MOD BROWSER — card grid (gta5mods-style) ---------- */
-function renderModBrowser() {
-  const game = DATA[activeGame];
-  const cats = Object.keys(game.categories);
-  const tabsEl = document.getElementById("subTabs");
-  tabsEl.innerHTML =
-    `<div style="padding:12px 20px;color:var(--gold);font-family:'Space Mono',monospace;font-size:10px;border-right:1px solid var(--line);">${game.name.toUpperCase()}</div>` +
-    cats.map(ck => `<div class="${ck === activeCat ? 'active' : ''}" onclick="selectCategory('${activeGame}','${ck}')">${game.categories[ck].label.toUpperCase()}</div>`).join("");
-
-  const cat = game.categories[activeCat];
-  const rowsEl = document.getElementById("modRows");
-  if (cat.mods.length === 0) {
-    rowsEl.innerHTML = `<div class="empty-state">No ${cat.label.toLowerCase()} uploaded yet — check back soon.</div>`;
-    return;
-  }
-  rowsEl.innerHTML = `<div class="mod-grid">` + cat.mods.map(m => {
-    const isLive = !!m.downloadUrl;
-    return `
-    <div class="mod-card" onclick="openModPopup('${activeGame}','${activeCat}','${m.id}')">
-      <div class="mod-card-thumb">
-        ${m.previewGif ? `<img src="${m.previewGif}" alt="${m.name}">` : `<div class="mod-card-noimg">NO PREVIEW</div>`}
-        <span class="mod-card-version">${m.version}</span>
-        ${!isLive ? `<span class="mod-card-status">COMING SOON</span>` : ""}
-      </div>
-      <div class="mod-card-body">
-        <h3>${m.name}</h3>
-        <div class="mod-card-meta">${m.size || 'TBD'} &middot; updated ${m.updated}</div>
-      </div>
-    </div>`;
-  }).join("") + `</div>`;
+/* DISABLED DOWNLOAD STATE */
+.dl-btn{
+  background:var(--teal);color:#0f1c1b;
+  font-family:'Bungee',cursive;font-size:10px;
+  padding:8px 14px;border:none;cursor:pointer;
+  text-decoration:none;display:inline-block;
+}
+.dl-btn:hover{background:#3cb8b0;}
+.dl-btn-disabled{
+  background:var(--bg-panel-hi) !important;
+  color:var(--smoke) !important;
+  border:1px solid var(--line);
+  cursor:not-allowed;
+  pointer-events:none;
 }
 
-/* ---------- MOD POPUP ---------- */
-function openModPopup(gk, ck, modId) {
-  const cat = DATA[gk].categories[ck];
-  const m = cat.mods.find(x => x.id === modId);
-  if (!m) return;
-  const isLive = !!m.downloadUrl;
-  const installSteps = (m.install && m.install.length) ? m.install : cat.install;
+/* DONATE */
+.donate-panel-wrap{max-width:860px;margin:0 auto;}
+.panel{background:var(--bg-panel);border:1px solid var(--line);padding:24px;}
+.panel h3{font-family:'Bungee',cursive;font-size:15px;margin-bottom:14px;color:var(--gold);text-align:center;}
+#kofiEmbed{overflow:hidden;border:1px solid var(--line);}
+#kofiEmbed iframe{display:block;width:100%;border:none;}
 
-  const body = document.getElementById("modModalBody");
-  body.innerHTML = `
-    ${m.previewGif ? `<img class="modal-gif" src="${m.previewGif}" alt="${m.name} preview">` : ""}
+footer{
+  border-top:2px solid var(--line);
+  padding:28px 0;
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:11px;color:var(--smoke);
+}
+footer .disclaimer{max-width:640px;margin:0 auto 10px;line-height:1.6;}
+footer .footer-row{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+  padding-top:14px;margin-top:14px;
+  border-top:1px solid var(--line);
+}
+footer .footer-row p{margin:0;}
+footer .credit a{color:var(--smoke);text-decoration:none;border-bottom:1px solid var(--line);}
+footer .credit a:hover{color:var(--gold);border-color:var(--gold);}
 
-    <div class="modal-header-row">
-      <h3 class="modal-title">${m.name}</h3>
-      <span class="modal-version-badge">${m.version}</span>
-    </div>
-    <div class="modal-meta">${m.size || 'TBD'} &middot; updated ${m.updated} &middot; ${DATA[gk].name} / ${cat.label}</div>
-
-    ${m.description ? `
-      <div class="modal-section">
-        <div class="modal-section-h">Overview</div>
-        <p class="modal-desc">${m.description}</p>
-      </div>` : ""}
-
-    ${m.features && m.features.length ? `
-      <div class="modal-section">
-        <div class="modal-section-h">Features</div>
-        <ul class="modal-features">${m.features.map(f => `<li>${f}</li>`).join("")}</ul>
-      </div>` : ""}
-
-    ${installSteps && installSteps.length ? `
-      <div class="modal-section">
-        <div class="modal-section-h">How to Install</div>
-        <div class="modal-install-steps">
-          ${installSteps.map((s, i) => `
-            <div class="istep">
-              <div class="n">0${i + 1}</div>
-              <div><div class="t">${s.t}</div><div class="d">${s.d}</div></div>
-            </div>`).join("")}
-        </div>
-      </div>` : ""}
-
-    <a class="dl-btn modal-dl ${isLive ? '' : 'dl-btn-disabled'}" ${isLive ? `href="${m.downloadUrl}"` : `href="#" onclick="return false;" aria-disabled="true"`}>
-      ${isLive ? 'DOWNLOAD' : 'COMING SOON'}
-    </a>
-  `;
-  document.getElementById("modModal").classList.add("show");
+@media (max-width:900px){
+  .navlinks{display:none;}
+  .search-wrap{max-width:none;}
 }
 
-function closeModPopup() {
-  document.getElementById("modModal").classList.remove("show");
+@media (max-width:600px){
+  .modal-header-row, .modal-meta, .modal-section{padding-left:18px;padding-right:18px;}
+  .modal-dl{width:calc(100% - 36px);margin-left:18px;margin-right:18px;}
+  .modal-title{font-size:20px;}
+  footer .footer-row{flex-direction:column;text-align:center;}
 }
-
-/* ---------- SEARCH ---------- */
-function buildSearchIndex() {
-  let items = [];
-  Object.keys(DATA).forEach(gk => {
-    const g = DATA[gk];
-    items.push({ type: "game", label: g.name, gk, ck: Object.keys(g.categories)[0] });
-    Object.keys(g.categories).forEach(ck => {
-      const cat = g.categories[ck];
-      items.push({ type: "category", label: cat.label + " \u2014 " + g.name, gk, ck });
-      cat.mods.forEach(m => {
-        items.push({ type: "mod", label: m.name, sub: cat.label + " \u2014 " + g.name, gk, ck });
-      });
-    });
-  });
-  return items;
-}
-
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
-const SEARCH_INDEX = buildSearchIndex();
-
-searchInput.addEventListener("input", () => {
-  const q = searchInput.value.trim().toLowerCase();
-  if (!q) {
-    searchResults.classList.remove("show");
-    searchResults.innerHTML = "";
-    return;
-  }
-  const matches = SEARCH_INDEX.filter(it => it.label.toLowerCase().includes(q)).slice(0, 8);
-  if (matches.length === 0) {
-    searchResults.innerHTML = `<div class="sr-empty">no matches for "${searchInput.value}"</div>`;
-  } else {
-    searchResults.innerHTML = matches.map(m => `
-      <div class="sr-item" onclick="goToResult('${m.gk}','${m.ck}')">
-        <span class="sr-name">${m.label}</span>
-        <span class="sr-meta">${m.type === 'mod' ? m.sub : m.type.toUpperCase()}</span>
-      </div>`).join("");
-  }
-  searchResults.classList.add("show");
-});
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".search-wrap")) {
-    searchResults.classList.remove("show");
-  }
-});
-
-function goToResult(gk, ck) {
-  selectCategory(gk, ck);
-  searchInput.value = "";
-  searchResults.classList.remove("show");
-}
-
-document.getElementById("installNavLink").addEventListener("click", (e) => {
-  e.preventDefault();
-  document.getElementById("installSection").scrollIntoView({ behavior: "smooth" });
-});
-
-document.getElementById("modModalClose").addEventListener("click", closeModPopup);
-document.getElementById("modModal").addEventListener("click", (e) => {
-  if (e.target.id === "modModal") closeModPopup();
-});
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModPopup();
-});
-
-renderGameGrid();
-renderDropdown();
-renderInstallIndex();
-renderModBrowser();
