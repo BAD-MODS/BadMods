@@ -187,6 +187,17 @@ nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76
 .game-card h3{font-family:'Bungee',cursive;font-size:14px;margin-bottom:6px;color:var(--bone);}
 .game-card p{font-family:'Space Mono',monospace;font-size:11px;color:var(--smoke);}
 
+/* INSTALL — game switcher (only the selected game's steps show) */
+.install-game-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.install-game-tab{
+  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.5px;
+  background:var(--bg-panel);color:var(--smoke);
+  border:1px solid var(--line);padding:8px 14px;cursor:pointer;
+  transition:color .12s ease, border-color .12s ease;
+}
+.install-game-tab:hover{color:var(--bone);border-color:var(--smoke);}
+.install-game-tab.active{color:var(--gold);border-color:var(--gold);background:var(--bg-panel-hi);}
+
 /* INSTALL INDEX (general, accordion) */
 .install-index{display:flex;flex-direction:column;border:none;}
 .idx-item{border:1px solid var(--line);border-top:none;}
@@ -312,6 +323,43 @@ nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76
 .modal-close:hover{color:var(--gold);border-color:var(--gold);}
 .modal-gif{width:100%;max-height:380px;object-fit:cover;display:block;border-bottom:1px solid var(--line);margin-bottom:22px;}
 
+/* POPUP GALLERY (mods with several pics/gifs) */
+.gallery{border-bottom:1px solid var(--line);margin-bottom:22px;background:#0d0b0a;}
+.gallery-stage{position:relative;aspect-ratio:16/9;max-height:405px;width:100%;background:#0d0b0a;}
+.gallery-stage img{width:100%;height:100%;object-fit:contain;display:block;}
+.gallery-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:38px;height:54px;
+  background:rgba(19,16,16,0.7);border:1px solid var(--line);
+  color:var(--bone);font-size:28px;line-height:1;cursor:pointer;
+  transition:color .12s ease, border-color .12s ease;
+}
+.gallery-nav:hover{color:var(--gold);border-color:var(--gold);}
+.gallery-nav.prev{left:10px;}
+.gallery-nav.next{right:10px;}
+.gallery-count{
+  position:absolute;bottom:10px;right:10px;
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--bone);
+  background:rgba(19,16,16,0.75);border:1px solid var(--line);padding:3px 8px;
+}
+.gallery-strip{
+  display:flex;gap:8px;padding:10px;overflow-x:auto;
+  border-top:1px solid var(--line);background:var(--bg-panel-hi);
+}
+.gallery-thumb{
+  position:relative;flex:0 0 96px;height:54px;padding:0;
+  background:#0d0b0a;border:2px solid var(--line);cursor:pointer;opacity:0.6;
+  transition:opacity .12s ease, border-color .12s ease;
+}
+.gallery-thumb:hover{opacity:1;}
+.gallery-thumb.active{opacity:1;border-color:var(--gold);}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-thumb-tag{
+  position:absolute;bottom:2px;left:2px;
+  font-family:'Space Mono',monospace;font-size:8px;color:#1c1815;
+  background:var(--gold);padding:1px 4px;
+}
+
 .modal-header-row{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:0 26px;margin-bottom:6px;flex-wrap:wrap;
@@ -335,6 +383,24 @@ nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76
 .modal-desc{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--bone);line-height:1.6;}
 .modal-features{margin-left:18px;font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--bone);}
 .modal-features li{margin-bottom:6px;}
+.modal-subfeatures{margin:6px 0 2px 18px;list-style:square;color:var(--smoke);font-size:14px;}
+.modal-subfeatures li{margin-bottom:4px;}
+.modal-para + .modal-para{margin-top:10px;}
+
+/* controls table (key / action) */
+.modal-keys{display:flex;flex-direction:column;border:1px solid var(--line);}
+.modal-key-row{display:flex;align-items:baseline;gap:14px;padding:8px 12px;border-top:1px solid var(--line);}
+.modal-key-row:first-child{border-top:none;}
+.modal-key-row:nth-child(odd){background:var(--bg-panel-hi);}
+.modal-key{
+  flex:0 0 150px;
+  font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);
+}
+.modal-key-action{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--bone);}
+@media (max-width:600px){
+  .modal-key-row{flex-direction:column;gap:2px;}
+  .modal-key{flex:none;}
+}
 
 .modal-install-steps .istep{display:flex;gap:12px;padding:9px 0;}
 .modal-install-steps .istep .n{font-family:'Bungee',cursive;color:var(--red);font-size:15px;min-width:24px;}
