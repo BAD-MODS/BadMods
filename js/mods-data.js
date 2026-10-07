@@ -72,7 +72,7 @@ const DATA = {
           {
             id: "playermod",
             name: "PlayerMOD",
-            version: "v0.1.0 BETA",
+            version: "v0.1.1 BETA",
             size: "180MB",
             updated: "Oct 2026",
             builtOn: "0.39.4",
@@ -117,7 +117,6 @@ const DATA = {
                 "Second hop when you land while walking and running",
                 "Short pause the first time the character loads each session",
                 "Lean is hard to line up, may replace",
-                "BeamMP untested",
                 "No controller support yet for phone",
                 "Exposure on photos sometimes changes",
                 "It's a beta. If something breaks, tell me what you were doing and attach your beamng.log: %LOCALAPPDATA%\\BeamNG\\BeamNG.drive\\current\\beamng.log"
@@ -138,7 +137,6 @@ const DATA = {
               ], afterInstall: true },
               { h: "Credits", items: [
                 "Character and animations: Mixamo",
-                "Made by Nilly",
                 "Feedback, bug reports and app ideas are welcome. This is just the start."
               ], afterInstall: true }
             ],
@@ -150,7 +148,7 @@ const DATA = {
               "images/mods/playermod/pMss2.png",
               "images/mods/playermod/pMss3.png"
             ],
-            downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/playermod-v0.1.0-beta/playerMOD_beta_v0.1.0.zip"
+            downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/playermod-v0.1.1-beta/playerMOD_beta_v0.1.1.zip"
           }
         ]
       },
