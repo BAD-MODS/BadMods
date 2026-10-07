@@ -76,7 +76,7 @@ const DATA = {
             size: "180MB",
             updated: "Oct 2026",
             builtOn: "0.39.4",
-            description: "A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, and settings.",
+            description: "v0.1.1 fixes beamMP launcher conflicts & controls bug - joining a server should fully disable mod unless server has it enabled.                                      A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, and settings.",
             install: [],                    // [] = uses the Player category's steps above
             features: [
               "Animated third-person character (idle / walk / run / crouch), turns smoothly to face where you're going",
