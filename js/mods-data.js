@@ -20,6 +20,7 @@
      size: "4MB",                  // leave "" until you know it
      updated: "Jul 2026",
      description: "1-3 sentences shown in the popup.",
+                                   // multi-line text: use `backticks` instead of quotes
      install: [                    // steps shown in the popup's
        { t: "Step title", d: "Step detail sentence." }   // "How to Install" section
      ],                             // leave [] to fall back to the
@@ -76,14 +77,14 @@ const DATA = {
             size: "200MB",
             updated: "Nov 2026",
             builtOn: "0.40",
-            description: 'A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, and settings.
-               v0.1.0 beta: Initial release
-               v0.1.1 beta: fixes beamMP launcher conflicts & controls bug - joining a server should fully disable mod unless server has it enabled.
-               v0.2.0 beta: New phone apps! 
-               Music: play your own MP3/OGG/WAV files from the music/PlayerMOD folder in your BeamNG user folder. Song list, play/pause/skip, timeline, volume, and a now-playing bar on the home screen.
-               GPS: live map of the roads, Click to set a waypoint, search places from the pause map, zoom, re-center, clear route.
-               New features: Phone now works inside vehicles. Press U (H is the horn in cars). Wallpaper crop: drag and zoom to frame your wallpaper, and re-adjust it anytime from Settings. PlayerMOD page in the pause menu's Mods tab, where you can change every PlayerMOD key, including new music play/pause/next/previous keys. 
-               Fixes: Phone photos coming out overexposed or white (especially with traffic or low FPS). Crash when opening the Gallery with no photos yet. Double hop when jumping while walking or running.',
+            description: `A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, music, GPS and settings.
+v0.1.0 beta: Initial release
+v0.1.1 beta: fixes BeamMP launcher conflicts & controls bug - joining a server fully disables the mod unless the server has it enabled.
+v0.2.0 beta: New phone apps!
+Music: play your own MP3/OGG/WAV files from the music/PlayerMOD folder in your BeamNG user folder. Song list, play/pause/skip, timeline, volume, and a now-playing bar on the home screen.
+GPS: live map of the roads. Click to set a waypoint, search places from the pause map, zoom, re-center, clear route.
+New features: Phone now works inside vehicles. Press U (H is the horn in cars). Wallpaper crop: drag and zoom to frame your wallpaper, and re-adjust it anytime from Settings. PlayerMOD page in the pause menu's Mods tab, where you can change every PlayerMOD key, including new music play/pause/next/previous keys.
+Fixes: Phone photos coming out overexposed or white (especially with traffic or low FPS). Crash when opening the Gallery with no photos yet. Double hop when jumping while walking or running.`,
             install: [],                    // [] = uses the Player category's steps above
             features: [
               "Animated third-person character (idle / walk / run / crouch), turns smoothly to face where you're going",
@@ -91,11 +92,14 @@ const DATA = {
               "Crouch with stand-up and crouch-down transitions",
               "Jump",
               "Pose wheel: Lean, Laying, Standing, Standing 2, Sitting, Wave, plus a Dances page (Dance 1, Dance 2)",
-              { text: "Phone (slides up bottom right, mouse controlled)", sub: [
+              { text: "Phone (slides up bottom right, mouse controlled, works on foot and in vehicles)", sub: [
                 "Camera app: character raises the phone and aims, walk/strafe while aiming, exposure +/-, shutter",
                 "Gallery app: browse, delete, download opens your PC photo folder",
-                "Settings app: set any photo as your phone wallpaper, plus third-person camera height, distance, shoulder offset and FOV (live preview, Save / Reset)"
+                "Settings app: set any photo as your phone wallpaper (drag / zoom to frame it), plus third-person camera height, distance, shoulder offset and FOV (live preview, Save / Reset)",
+                "Music app: plays your own MP3/OGG/WAV files, now-playing bar on the home screen, keeps playing with the phone away and in cars",
+                "GPS app: live road map that turns with you, click the map or search a place to set a waypoint"
               ]},
+              "Change every PlayerMOD key from the PlayerMOD page in the pause menu's Mods tab",
               "Photos render the scene without the UI, at 1920x1080",
               "Free cam (Shift+C) shows your character, so you can line up your own shots",
               "Door / hood / trunk interaction squares work from third person"
@@ -109,37 +113,40 @@ const DATA = {
                 { k: "C", a: "First / third person" },
                 { k: "G", a: "Pose wheel (G again to close menu and cancel pose/emote, moving also cancels)" },
                 { k: "H", a: "Phone out / away" },
-                { k: "Shift + C", a: "Free cam (BeamNG freecam)" }
+                { k: "U", a: "Phone in vehicles" },
+                { k: "Shift + C", a: "Free cam (BeamNG freecam)" },
+                { k: "Unbound", a: "Music play / pause, next, previous (set them in Pause menu > Mods > PlayerMOD)" }
               ]},
               { h: "On the Phone", items: [
                 "Mouse cursor to use apps, home bar at the bottom = back / close",
                 "Camera: right/left click drag phone screen",
+                "Music: tap \"Add music to folder\" to open the music folder, drop your songs in, then tap refresh",
+                "GPS: drag to move the map, scroll or +/- to zoom, click to set a waypoint, arrow button re-centers on you",
+                "All keys can be changed in Pause menu > Mods > PlayerMOD (on-foot keys while you're on foot)",
                 "Phone app settings are saved, photos are saved to: [BeamNG user folder]\\screenshots\\PlayerMOD\\"
               ]},
               { h: "File Size (please read)", text: [
-                "The download is about 180 MB (about 600 MB once the game unpacks it). Most of that is the phone: the current phone model is very detailed, it's a placeholder. The next major update replaces it with a much lighter phone, which should cut the size down a lot.",
+                "The download is about 200 MB (about 740 MB once the game unpacks it). Most of that is the phone: the current phone model is very detailed, it's a placeholder. A future update replaces it with a much lighter phone, which should cut the size down a lot.",
                 "The first time your character appears (first switch to third person after loading a map) there's a short pause while all the animations load. After that it's smooth."
               ], afterInstall: true },
               { h: "Known Issues / Beta Notes", items: [
                 "Short pause the first time the character loads each session",
                 "Lean is hard to line up, may replace",
                 "No controller support yet for phone",
-                "Exposure on photos sometimes changes",
                 "It's a beta. If something breaks, tell me what you were doing and attach your beamng.log: %LOCALAPPDATA%\\BeamNG\\BeamNG.drive\\current\\beamng.log"
               ], afterInstall: true },
               { h: "Planned / Roadmap", items: [
                 "Lighter phone model (much smaller download)",
-                "More phone apps aimed at car meets and RP (ideas: messages, map/GPS, car info, music, tow truck?)",
+                "More phone apps aimed at car meets and RP (ideas: messages, car info, tow truck?)",
                 "Career mode focus (RLS-friendly features)",
-                "Better animations and smoother transitions, plus more poses and dances",
+                "Better animations and smoother transitions (animation blending), plus more poses and dances",
                 "Car-aware poses (lean on the hood, door, sit on the trunk)",
                 "Selfie mode",
                 "Crouch camera mode (crouch walk and strafe while aiming the phone)",
                 "Driver in the car with hands on the wheel",
                 "Custom pose wheel styled like the phone",
                 "Controller support",
-                "Video recording in the camera app (if possible)",
-                "Jump polish"
+                "Video recording in the camera app (if possible)"
               ], afterInstall: true },
               { h: "Credits", items: [
                 "Character and animations: Mixamo",
@@ -155,7 +162,8 @@ const DATA = {
               "images/mods/playermod/pMss3.png",
               "images/mods/playermod/pMss4.png"
             ],
-            downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/playermod-v0.1.1-beta/playerMOD_beta_v0.1.1.zip"
+            // works once the GitHub release with tag "playermod-v0.2.0-beta" has playerMOD_beta_v0.2.0.zip attached
+            downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/playermod-v0.2.0-beta/playerMOD_beta_v0.2.0.zip"
           }
         ]
       },
