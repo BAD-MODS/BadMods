@@ -20,7 +20,7 @@
      size: "4MB",                  // leave "" until you know it
      updated: "Jul 2026",
      description: "1-3 sentences shown in the popup.",
-                                   // multi-line text: use `backticks` instead of quotes
+                                   // multi-line text: use `backticks`, <br> for a new line
      install: [                    // steps shown in the popup's
        { t: "Step title", d: "Step detail sentence." }   // "How to Install" section
      ],                             // leave [] to fall back to the
@@ -77,14 +77,14 @@ const DATA = {
             size: "200MB",
             updated: "Nov 2026",
             builtOn: "0.40",
-            description: `A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, music, GPS and settings.
-v0.1.0 beta: Initial release
-v0.1.1 beta: fixes BeamMP launcher conflicts & controls bug - joining a server fully disables the mod unless the server has it enabled.
-v0.2.0 beta: New phone apps!
-Music: play your own MP3/OGG/WAV files from the music/PlayerMOD folder in your BeamNG user folder. Song list, play/pause/skip, timeline, volume, and a now-playing bar on the home screen.
-GPS: live map of the roads. Click to set a waypoint, search places from the pause map, zoom, re-center, clear route.
-New features: Phone now works inside vehicles. Press U (H is the horn in cars). Wallpaper crop: drag and zoom to frame your wallpaper, and re-adjust it anytime from Settings. PlayerMOD page in the pause menu's Mods tab, where you can change every PlayerMOD key, including new music play/pause/next/previous keys.
-Fixes: Phone photos coming out overexposed or white (especially with traffic or low FPS). Crash when opening the Gallery with no photos yet. Double hop when jumping while walking or running.`,
+            description: `A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, music, GPS and settings.<br><br>
+<span style="color:var(--gold);font-weight:700;">v0.1.0 beta:</span> Initial release.<br><br>
+<span style="color:var(--gold);font-weight:700;">v0.1.1 beta:</span> Fixes BeamMP launcher conflicts &amp; a controls bug. Joining a server fully disables the mod unless the server has it enabled.<br><br>
+<span style="color:var(--gold);font-weight:700;">v0.2.0 beta:</span> New phone apps!<br>
+<b>Music:</b> play your own MP3/OGG/WAV files from the music/PlayerMOD folder in your BeamNG user folder. Song list, play/pause/skip, timeline, volume, and a now-playing bar on the home screen.<br>
+<b>GPS:</b> live map of the roads. Click to set a waypoint, search places from the pause map, zoom, re-center, clear route.<br>
+<b>New features:</b> Phone now works inside vehicles. Press U (H is the horn in cars). Wallpaper crop: drag and zoom to frame your wallpaper, and re-adjust it anytime from Settings. PlayerMOD page in the pause menu's Mods tab, where you can change every PlayerMOD key, including new music play/pause/next/previous keys.<br>
+<b>Fixes:</b> Phone photos coming out overexposed or white (especially with traffic or low FPS). Crash when opening the Gallery with no photos yet. Double hop when jumping while walking or running.`,
             install: [],                    // [] = uses the Player category's steps above
             features: [
               "Animated third-person character (idle / walk / run / crouch), turns smoothly to face where you're going",
