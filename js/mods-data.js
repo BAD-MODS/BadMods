@@ -72,11 +72,18 @@ const DATA = {
           {
             id: "playermod",
             name: "PlayerMOD",
-            version: "v0.1.1 BETA",
-            size: "180MB",
-            updated: "Oct 2026",
-            builtOn: "0.39.4",
-            description: "A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, and settings.",
+            version: "v0.2.0 BETA",
+            size: "200MB",
+            updated: "Nov 2026",
+            builtOn: "0.40",
+            description: 'A third-person character mod for BeamNG.drive. PlayerMOD replaces the walking-mode snowball with a fully animated character: idle, walk, run, crouch, jump, an emote/pose wheel for shots with your car, and a working phone with its own camera, gallery, and settings.
+               v0.1.0 beta: Initial release
+               v0.1.1 beta: fixes beamMP launcher conflicts & controls bug - joining a server should fully disable mod unless server has it enabled.
+               v0.2.0 beta: New phone apps! 
+               Music: play your own MP3/OGG/WAV files from the music/PlayerMOD folder in your BeamNG user folder. Song list, play/pause/skip, timeline, volume, and a now-playing bar on the home screen.
+               GPS: live map of the roads, Click to set a waypoint, search places from the pause map, zoom, re-center, clear route.
+               New features: Phone now works inside vehicles. Press U (H is the horn in cars). Wallpaper crop: drag and zoom to frame your wallpaper, and re-adjust it anytime from Settings. PlayerMOD page in the pause menu's Mods tab, where you can change every PlayerMOD key, including new music play/pause/next/previous keys. 
+               Fixes: Phone photos coming out overexposed or white (especially with traffic or low FPS). Crash when opening the Gallery with no photos yet. Double hop when jumping while walking or running.',
             install: [],                    // [] = uses the Player category's steps above
             features: [
               "Animated third-person character (idle / walk / run / crouch), turns smoothly to face where you're going",
@@ -114,7 +121,6 @@ const DATA = {
                 "The first time your character appears (first switch to third person after loading a map) there's a short pause while all the animations load. After that it's smooth."
               ], afterInstall: true },
               { h: "Known Issues / Beta Notes", items: [
-                "Second hop when you land while walking and running",
                 "Short pause the first time the character loads each session",
                 "Lean is hard to line up, may replace",
                 "No controller support yet for phone",
@@ -146,7 +152,8 @@ const DATA = {
             gallery: [
               "images/mods/playermod/pMss1.png",
               "images/mods/playermod/pMss2.png",
-              "images/mods/playermod/pMss3.png"
+              "images/mods/playermod/pMss3.png",
+              "images/mods/playermod/pMss4.png"
             ],
             downloadUrl: "https://github.com/BAD-MODS/BadMods/releases/download/playermod-v0.1.1-beta/playerMOD_beta_v0.1.1.zip"
           }
